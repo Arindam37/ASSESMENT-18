@@ -1,0 +1,199 @@
+ANS 1)
+Statement
+It is used to execute normal SQL queries.
+It usually used when SQL query is needed to be executed only one time.
+Parameters cannot be passed to SQL query using this interface.
+It is mainly used for DDL statements like CREATE,ALTER,DROP etc.
+Its performace is comparably low .
+Example :
+Statement stmt = conn.createStatement( );
+
+PreparedStatement
+It is used to execute parameterized SQL queries.
+It usually used when SQL query is needed to be executed multiple times.
+Parameters can be passed to SQL query using this interface.
+It is used for any kind of SQL query.
+Its performance is better than Statement.
+Example :
+String abc = "Update Employees SET age = ? WHERE id = ?";
+PreparedStatement pstmt = conn.prepareStatement(abc);
+
+CallableStatement
+It is used to call the stored procedures.
+It usually used when stored procedures are to be executed.
+Three parameters can be passed to SQL query using this interface they are: IN,OUT,INOUT.
+It is used to execute stored procedures and functions.
+Its performance is better than Statement,PreparedStatement.
+Example :
+String abc = "{call procedurename (?, ?)}";
+CallableStatement cstmt = conn.prepareCall (abc);
+
+
+ANS 2)
+Need of connection object :
+Connection object is used represents a connection with a database
+It creates the Statement, PreparedStatement and CallableStatement objects for executing the SQL statements.
+It is needed to Commit or roll back a jdbc transaction.
+with connection object we can gathers information about the database or data source by the use of DatabaseMetaData.
+It is needed to close the data source.Connection.isClosed() method is used to close all the connection.
+
+ANS 3)
+    UPDATE emp set salary=salary+((5*salary)/100) where salary >0;
+
+ANS 4)
+A stored procedure is a group of SQL statements that are stored together in a database.
+Based on the statements in the procedure and the parameters passed it can be used to perform one or multiple DML operations on the database.
+stored procedures can be invoked using triggers, other procedures or applications. 
+it can be used to pass the same statements multiple times which increases reusability.
+There are 3 different types of parameters that can be passesd to stored procedures : 
+1) IN: 
+This is the Default Parameter for the procedure. It receives the values from calling program.
+2) OUT: 
+This parameter sends the values to the calling program.
+2) IN OUT: 
+This parameter is used to performs both the IN and OUT operations.
+
+Example:
+CREATE PROCEDURE AverageMarks(OUT average INT)
+BEGIN
+SELECT AVG(marks) INTO avrg FROM profile;
+END
+
+we call a stored procedure in java using CallableStatement
+Example:
+CallableStatement stmt=con.prepareCall("{call avgmarks(?}");
+
+ANS 5)
+The benefits of using a trigger are :
+
+Allows us to reuse the queries.
+It Helps to detect errors on the database level.
+It helps in maintaining the integrity constraints in the database tables.
+It Helps to automate the data alterations.It useful for the purpose of auditing of the changes made in the table
+It improve performance in client/server environment.
+It helps in keeping the SQL codes short and simple.
+Provides a method to check the data integrity of the database.
+
+
+
+ANS 6)
+The difference between Join & Union are : 	 
+JOIN:
+Join are used when we want to fetch data from multiple table based on some similar data.
+There are four major types of the JOIN clause- the LEFT, RIGHT, FULL OUTER, and INNER JOIN.
+It combines data into new columns.
+Number of columns selected from each table may not be same.
+Result set can have different types of data types
+It may not return distinct columns.
+It doesn't remove duplicate data.
+
+Example:
+SELECT abc
+FROM TableA
+INNER JOIN
+TableB 
+
+
+
+UNION:
+It can be used to combine the result set of two different SELECT statement.
+There are two major types of the UNION clause- the UNION and the UNION ALL.
+It combines data into new rows.
+Number of columns selected from each table should be same.
+Data type should be same as the  result set of each select statement
+It removes duplicate rows between the various select statements.
+It returns distinct rows.
+
+Example:
+SELECT abc
+FROM tableA
+UNION
+SELECT abc
+FROM tableB
+
+
+
+ANS 7)
+DDL :
+It stands for Data Definition Language.
+DDL consists of the SQL commands that can be used to define the database schema.
+It simply deals with descriptions of the database schema and is used to create and modify the structure of database objects in the database.
+DDL is a set of SQL commands used to create, modify, and delete database structures but not data.
+DDL has no further classification.
+
+List of DDL commands: 
+CREATE: This command is used to create the database or its objects (like table, index, function, views, store procedure, and triggers).
+DROP: This command is used to delete objects from the database.
+ALTER: This is used to alter the structure of the database.
+COMMENT: This is used to add comments to the data dictionary.
+RENAME: This is used to rename an object existing in the database.
+EXAMPLE->Create database java2023;
+
+
+DML :
+It stands for Data Manipulation Language.
+The SQL commands that deals with the manipulation of data present in the database belong to DML.
+It is the component of the SQL statement that controls access to data and to the database.
+DML is further classified into procedural DML and non-procedural DML.
+
+List of DML commands: 
+INSERT : It is used to insert data into a table.
+UPDATE: It is used to update existing data within a table.
+DELETE : It is used to delete records from a database table.
+LOCK: Table control concurrency.
+EXAMPLE->
+UPDATE students    
+SET FirstName = 'abc', LastName= 'def' 
+WHERE StudID = 3;
+
+
+DQL :
+It stands for Data Query Language.
+DQL statements are used for performing queries on the data within schema objects.
+The purpose of the DQL Command is to get some schema relation based on the query passed to it
+it is a component of SQL statement that allows getting data from the database and imposing order upon it.
+
+List of DQL: 
+SELECT: It is used to retrieve data from the database.
+EXAMPLE->
+SELECT FirstName  
+FROM Student  
+WHERE RollNo > 15; 
+
+
+ANS 8)
+Basic steps for JDBC:
+1. Fetch Driver
+2. Create Connection
+3. Create SQL Statement
+4. Execute SQL Queries
+5. Close the Connection
+
+
+1. Fetch Driver
+The Class.forName() method is used to register the driver class dynamically.
+
+For example:
+Class.forName("com.mysql.cj.jdbc.Driver");
+
+2. Create Connection
+The DriverManager class provides the getConnection() method to establish connection object.
+It requires to pass a database url, username and password.
+For example:
+Connection con = DriverManager.getConnection ("jdbc:mysql://localhost/abc,"root","");
+
+3. Create SQL Statement
+The Connection interface provides the createStatement() method to create SQL statement.
+Example:
+Statement stmt = con.createStatement();
+
+4. Execute SQL Queries
+The Statement interface provides the executeQuery( ) method to execute SQL statements.
+Example
+ResultSet rs = stmt.executeQuery("insert into employee(id,marks)values(1,70));
+
+5. Close the Connection
+The Connection interface provides close( ) method, used to close the connection. 
+It is invoked to release the session after execution of SQL statement.
+Example:
+con.close( );
